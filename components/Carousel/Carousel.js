@@ -38,171 +38,123 @@ function Carousel(index){
   leftButton.classList.add("left-button")
   rightButton.classList.add("right-button")
 
+  leftButton.textContent = "<"
+  rightButton.textContent = "\u003E"
+  rightButton.style.textAlign = "center"
+
   img1.setAttribute("src", "./assets/carousel/mountains.jpeg")
   img2.setAttribute("src", "./assets/carousel/computer.jpeg")
   img3.setAttribute("src", "./assets/carousel/trees.jpeg")
   img4.setAttribute("src", "./assets/carousel/turntable.jpeg")
-
-  img1.style.display = "block"
-  img2.style.display = "none"
-  img3.style.display = "none"
-  img4.style.display = "none"
 
   img1.setAttribute("id", "img1")
   img2.setAttribute("id", "img2")
   img3.setAttribute("id", "img3")
   img4.setAttribute("id", "img4")
 
+  img1.style.display = "block"
+  img2.style.display = "none"
+  img3.style.display = "none"
+  img4.style.display = "none"
 
-  //////////////////////////////////////////////////////
-  // const list = [1, 2, 3, 4]
-  // var target = 0
-
-  // leftButton.addEventListener("click", event =>{
-  //   // console.log(event)
-  //   console.log(`current: ${index}`)
-  //   console.log(`previous:${previous}`)
-  //   console.log(`start:${start}`)
-
-  //   if (start){
-  //     DisplayToggle(img1)
-  //     DisplayToggle(img4)
-  //     target = 3
-  //     start = 0
-  //   }
-  // //   switch(index){
-  // //     case 0:
-  // //       console.log(`case0`)
-  // //       DisplayToggle(img1)
-  // //       DisplayToggle(img4)
-  // //       break;
-  // //     case 1:
-  // //       console.log(`case1`)
-  // //       DisplayToggle(img4)
-  // //       DisplayToggle(img3)
-  // //       break;
-  // //     case 2:
-  // //       console.log(`case2`)
-  // //       DisplayToggle(img3)
-  // //       DisplayToggle(img2)
-  // //       break;
-  // //     case 3:
-  // //       console.log(`case3`)
-  // //       DisplayToggle(img2)
-  // //       DisplayToggle(img1)
-  // //       break;
-  // //   }
-
-  //   // if(index === 3){
-  //   //   index = 0
-  //   // }else{
-  //   //   index++
-  //   // }
-  //   index--
-  //   console.log(`next:${index}`)
-  // })
-
-  // rightButton.addEventListener("click", event =>{
-  //   // console.log(event)
-  //   console.log(`current: ${index}`)
-  //   console.log(`previous:${previous}`)
-  //   console.log(`start:${start}`)
-
-  //   if (start){
-  //       DisplayToggle(img1)
-  //       DisplayToggle(img2)
-  //       start = 0
-  //       previous = index
-  //   }
-  //   // switch(index){
-  //   //   case 0:
-  //   //     console.log(`case0`)
-  //   //     DisplayToggle(img1)
-  //   //     DisplayToggle(img2)
-  //   //     break;
-  //   //   case 1:
-  //   //     console.log(`case1`)
-  //   //     DisplayToggle(img2)
-  //   //     DisplayToggle(img3)
-  //   //     break;
-  //   //   case 2:
-  //   //     console.log(`case2`)
-  //   //     DisplayToggle(img3)
-  //   //     DisplayToggle(img4)
-  //   //     break;
-  //   //   case 3:
-  //   //     console.log(`case3`)
-  //   //     DisplayToggle(img4)
-  //   //     DisplayToggle(img1)
-  //   //     break;
-  //   // }
-
-  //   // if(index === 3){
-  //   //   index = 0
-  //   // }else{
-  //   //   index++
-  //   // }
-  //   index++
-  //   console.log(`next:${index}`)
-  // })
-
-  /////////////////////////////////////////
   return carousel
 }
 
-function DisplayToggle(img){
-  if (img.style.display === "none") {
-    img.style.display = "block";
-  } else {
-    img.style.display = "none";
-  }
-}
+function CarouselStart(carousels, buttons, start, current){
 
-function CarouselStart(start){
   timer = setInterval(function(){
     msTime++
+    // console.log(current)
     if(start){
       img4.style.display = "none"
       img1.style.display = "block"
       start = 0
+      current = 0
     }
     switch(msTime){
       case 300:
         img1.style.display = "none"
         img2.style.display = "block"
+        current = 1
         break;
       case 600:
         img2.style.display = "none"
         img3.style.display = "block"
+        current = 2
         break;
       case 900:
         img3.style.display = "none"
         img4.style.display = "block"
+        current = 3
         break; 
     }
     if(msTime === 1200){
       msTime = 0
       img4.style.display = "none"
       img1.style.display = "block"
+      current = 0
     }
+    CarouselButton(carousels, buttons, current)
+    console.log(`inside Start: ${current}`)
   }, 12);
+
 }
 
 function CarouselStop(){
   clearInterval(timer)
 }
 
-var msTime = 0;
-var timer;
+function CarouselButton(imgList, buttons, current){
 
-var current = 0
-var previous = 0
-var start = 1
+  const leftButton = buttons[0]
+  const rightButton = buttons[1]
 
+  leftButton.addEventListener("click", event =>{
+    CarouselStop()
+    for(var i = 0; i < imgList.length; i++){
+      imgList[i].style.animation = "none"
+    }
+    var imgShow = 0
+    imgList[current].style.display = "none"
+    if(current === 0){
+      imgShow = ((current + 3) % imgList.length)
+        imgList[imgShow].style.display = "block"
+      current = imgList.length - 1 
+    }else{
+      imgShow = current - 1
+      imgList[imgShow].style.display = "block"
+      current--
+    }
+
+  })
+
+  rightButton.addEventListener("click", event =>{
+    CarouselStop()
+    for(var i = 0; i < imgList.length; i++){
+      imgList[i].style.animation = "none"
+    }
+    var imgShow = 0
+    imgList[current].style.display = "none"
+    if(current === 3){
+      imgShow = ((current - 3) % imgList.length)
+        imgList[imgShow].style.display = "block"
+      current = 0 
+    }else{
+      imgShow = current + 1
+      imgList[imgShow].style.display = "block"
+      current++
+    }
+  })
+}
+
+////////////////Generate Carousel///////////////
 const carouselContainer = document.querySelector(".carousel-container")
 carouselContainer.appendChild(Carousel(current))
-CarouselStart(start)
-
-console.log("outside")
-var carousels = document.querySelectorAll(".carousel img")
-
+///////////////Carousel scroll/////////////
+var msTime = 0;
+var timer;
+var current = 0
+var start = 1
+const carousels = document.querySelectorAll(".carousel img")
+const buttons = document.querySelectorAll(".carousel div")
+CarouselStart(carousels, buttons, start, current)

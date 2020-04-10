@@ -272,7 +272,7 @@ body {
 .carousel .right-button {
   display: flex;
   justify-content: center;
-  align-items: none;
+  align-items: center;
   flex-direction: row;
   color: #fff;
   background-color: #333;
@@ -299,7 +299,7 @@ body {
   right: 25px;
   transform: translate(0, -50%);
 }
-@keyframes display {
+@keyframes anime {
   0% {
     opacity: 0;
   }
@@ -313,6 +313,6 @@ body {
 .carousel img {
   width: 100%;
   display: none;
-  transition-timing-function: ease-in-out;
-  animation: display 5s;
+  z-index: -1;
+  animation: anime 5s;
 }
