@@ -9,7 +9,7 @@
     width: 1200px;
   }
   .left-button, .right-button {
-    .flex(center);
+    .flex(center,center);
     color: @lambda-times-color-white;
     background-color: @lambda-times-color-primary;
     font-size: 40px;
@@ -34,8 +34,23 @@
     right: 25px;
     transform: translate(0, -50%);
   }
+
+  @keyframes anime {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   img {
     .width-100();
     display: none;
+    z-index: -1;
+    animation: anime 5s;
   }
 }
